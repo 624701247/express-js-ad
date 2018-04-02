@@ -2,7 +2,7 @@ var carry = {}
 
 !function(mgr) {
     mgr.run = function() {
-        console.log('jinx 正式')
+        console.log('ktest 正式')
     }
 }(carry)
 
