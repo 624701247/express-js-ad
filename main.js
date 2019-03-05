@@ -2,6 +2,7 @@ var path = require("path");
 var express = require('express');
 var app = express();
 var jinx = require('./jinx');
+var accountRoute = require('./accountRoute');
 var fs = require('fs'); 
 // var ejs = require('ejs');
 
@@ -40,11 +41,15 @@ var defHtml = function (filePath, options, callback) {
 app.set('view engine', 'html'); // 指定模板文件的后缀名为html
 app.engine('html', defHtml)    // 运行模板
 app.set('views', 'jinx');      // 指定视图所在的位置
-app.use('/jinx', jinx);
 /*end 自定义模板*/ 
 
 
-/**/ 
+// 挂载路径到指定路由
+// 即访问 http://127.0.0.1:8081/api/login 的响应在 accountRoute.js中对应的方法
+app.use('/api', accountRoute)
+
+
+/*响应头设置*/ 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
@@ -59,13 +64,18 @@ app.all('*', function(req, res, next) {
 /*start 静态目录*/
 // 所有文件的路径都是相对于存放目录的，因此，存放静态文件的目录名不会出现在 URL 中。
 // 访问 http://127.0.0.1:8081/closeM.png  可获取
-// app.use(express.static('public'));
+app.use(express.static('public'));
 
 // 挂载一个路径 访问 http://127.0.0.1:8081/public-v/closeM.png  可获取
-// app.use('/public-v', express.static('public'));
+app.use('/public-v', express.static('public'));
 
-app.use('/jinx', express.static('jinx'));
+// http://127.0.0.1:8081/jh5/blue  可以访问jinx目录下的blue项目
+app.use('/h5', express.static('jinx'));
 /*end 静态目录*/
+
+
+/**/ 
+
 
 
 /*启动服务器*/ 

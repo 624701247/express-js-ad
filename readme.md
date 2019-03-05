@@ -1,8 +1,17 @@
 ##web server
 
-##### 技术：
-nodejs - express - js版本
- 
+### 技术：
+* nodejs - express - js版本   
+* nodemon 保存脚本自动重启服务器
+* ejs等html5模板
+
+### 使用：
+初始化： npm install   
+运行： npm start     
+其他的你看代码里的注释吧 
+
+
+##
 ##### express 
 npm install express --save
 
