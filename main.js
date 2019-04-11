@@ -3,23 +3,25 @@ var express = require('express');
 var app = express();
 var jinx = require('./jinx');
 var accountRoute = require('./accountRoute');
+
+var microRoute = require('./microRoute')
+
 var fs = require('fs'); 
 // var ejs = require('ejs');
 
 
-/*start mongodb*/ 
+/*start mongodb
 var mongoMgr = require('./mongoMgr')
 mongoMgr.init('mongodb://localhost:27017', 'admin', function() {
     // mongoMgr.insertItem("users", { name: "bill", addr: "bejing"} )
     mongoMgr.findAll('users',function(dataAry) {
         // console.log(dataAry)
     })
-})
-/*end mongodb*/ 
+})*/
+/*end mongodb*/
 
 
 /*start 自定义模板*/ 
-// 
 var defHtml = function (filePath, options, callback) {
     fs.readFile(filePath, function (err, content) {
         if (err) { return callback(new Error(err));}
@@ -47,6 +49,9 @@ app.set('views', 'jinx');      // 指定视图所在的位置
 // 挂载路径到指定路由
 // 即访问 http://127.0.0.1:8081/api/login 的响应在 accountRoute.js中对应的方法
 app.use('/api', accountRoute)
+
+
+app.use('/admin', microRoute)
 
 
 /*响应头设置*/ 
