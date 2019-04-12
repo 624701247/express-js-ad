@@ -22,7 +22,6 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 router.post('/getNeedParticipateExamList', jsonParser, function(req, res) {
 	// console.log('链接上参数', req.query) 
 	// console.log('body部分', req.body)  //这个要加上中间件 body-parser 才能拿得到
-
 	var data = {
 	  "isSuccess": true,
 	  "responseCode": 0,
@@ -184,6 +183,15 @@ router.post('/startTestAndGetQuestion', jsonParser, function(req, res) {
 	      "examQuestionNum": 100,
 	      "examQuestionTypeName": "判断题",
 	      "examQuestionId": 2
+	    },
+	    {
+	      "examQuestionType": 3,
+	      "examQuestionTitle": "判断判断啦",
+	      "examQuestionCode": "",
+	      "interactType": 2,
+	      "examQuestionNum": 100,
+	      "examQuestionTypeName": "判断题",
+	      "examQuestionId": 2
 	    }
 	  ],
 	  "total": 1
@@ -270,7 +278,7 @@ router.post('/getAnswers', jsonParser, function(req, res) {
 	      "interactType": 1,
 	      "examQuestionTypeName": "单选题"
 	    },
-	    {
+		    {
 	      "examQuestionType": 2,
 	      "examQuestionTitle": "222222222222222222",
 	      "optionList": [
@@ -308,6 +316,18 @@ router.post('/getAnswers', jsonParser, function(req, res) {
 	    }
 	  ],
 	  "total": 43
+	}
+	res.send(data);
+})
+
+
+router.post('/getExamFinish', jsonParser, function(req, res) {
+	var data = {
+	  "isSuccess": true,
+	  "responseCode": 0,
+	  "responseMsg": "请求成功",
+	  "total": 13,
+	  "data": true
 	}
 	res.send(data);
 })
