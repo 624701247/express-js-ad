@@ -192,7 +192,34 @@ router.post('/startTestAndGetQuestion', jsonParser, function(req, res) {
 	      "examQuestionNum": 100,
 	      "examQuestionTypeName": "判断题",
 	      "examQuestionId": 2
-	    }
+	    },
+	    {
+	      "examQuestionType": 5,
+	      "examQuestionTitle": "育究技会育人规已手引题目",
+	      "optionList": [
+	        {
+	          "optionId": 105,
+	          "optionDesc": "D.1111111111111"
+	        },
+	        {
+	          "optionId": 554,
+	          "optionDesc": "E.22222222222222"
+	        },
+	        {
+	          "optionId": 947,
+	          "optionDesc": "D.333333333333333"
+	        },
+	        {
+	          "optionId": 355,
+	          "optionDesc": "C.4444444444444444"
+	        }
+	      ],
+	      "examQuestionCode": "",
+	      "interactType": 2,
+	      "examQuestionNum": 100,
+	      "examQuestionTypeName": "多选题",
+	      "examQuestionId": 2
+	    },
 	  ],
 	  "total": 1
 	}
@@ -278,7 +305,7 @@ router.post('/getAnswers', jsonParser, function(req, res) {
 	      "interactType": 1,
 	      "examQuestionTypeName": "单选题"
 	    },
-		    {
+	    {
 	      "examQuestionType": 2,
 	      "examQuestionTitle": "222222222222222222",
 	      "optionList": [
@@ -313,7 +340,38 @@ router.post('/getAnswers', jsonParser, function(req, res) {
 	      "answerAnalysis": "行政场团会她",
 	      "interactType": 1,
 	      "examQuestionTypeName": "单选题"
-	    }
+	    },
+	    {
+	      "examQuestionType": 5,
+	      "examQuestionTitle": "计素土指般常代正住经",
+	      "optionList": [
+	        {
+	          "optionId": 1692,
+	          "optionDesc": "表老标然",
+	          "answerCorrect": 0
+	        },
+	        {
+	          "optionId": 1399,
+	          "optionDesc": "算月类位力",
+	          "answerCorrect": 0
+	        },
+	        {
+	          "optionId": 1042,
+	          "optionDesc": "没成问好",
+	          "answerCorrect": 0
+	        },
+	        {
+	          "optionId": 912,
+	          "optionDesc": "调指热组革",
+	          "answerCorrect": 0
+	        }
+	      ],
+	      "examQuestionCode": "Q8553",
+	      "examFocus": "少反适基队",
+	      "answerAnalysis": "行政场团会她",
+	      "interactType": 2,
+	      "examQuestionTypeName": "单选题"
+	    },
 	  ],
 	  "total": 43
 	}
@@ -327,7 +385,7 @@ router.post('/getExamFinish', jsonParser, function(req, res) {
 	  "responseCode": 0,
 	  "responseMsg": "请求成功",
 	  "total": 13,
-	  "data": true
+	  "data": false
 	}
 	res.send(data);
 })
