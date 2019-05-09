@@ -5,6 +5,7 @@ var jinx = require('./jinx');
 var accountRoute = require('./accountRoute');
 
 var microRoute = require('./microRoute')
+var clawRoute = require('./clawRoute')
 
 var fs = require('fs'); 
 // var ejs = require('ejs');
@@ -52,6 +53,7 @@ app.use('/api', accountRoute)
 
 
 app.use('/admin', microRoute)
+app.use('/claw', clawRoute)
 
 
 /*响应头设置*/ 
