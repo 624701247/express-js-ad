@@ -18,6 +18,8 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+var queCount = 0
+
 // 
 router.post('/getNeedParticipateExamList', jsonParser, function(req, res) {
     // console.log('链接上参数', req.query) 
@@ -83,6 +85,10 @@ router.post('/getTestPaperList', jsonParser, function(req, res) {
             "testPaperType": 2,
             "testPaperCode": "/P\\d{4}/",
             "finishStatus": 0
+          }, {
+            "finishStatus": 0,
+            testPaperCode: "SJ0182",
+            testPaperType: 2
           }
         ]
       }
@@ -91,89 +97,143 @@ router.post('/getTestPaperList', jsonParser, function(req, res) {
 })
 
 router.post('/startTestAndGetQuestion', jsonParser, function(req, res) {
+    console.log('获取考题,题11号：', queCount)
+    // queCount++
+    var que = {
+        "examQuestionType": 1, //1 单选； 5 点击
+        // "examQuestionTitle": `<p>点击题目啊<video style="height: 240px;" class="video-js vjs-default-skin video-js" controls="" preload="none" width="420" height="280" src="http://tmallapi.bluemoon.com.cn/cloudStorage/read/read?p=wSa4qbfHxJO39NCVyv5oOghYdxfw6Vg403p2DkH4xEUlmfzDMi13K1I_NvklMLxhRpCSfjNkjvbs30ddex5nXQzWw3F0spMrCdD4twdP3N6p3uEdZS7CjVxrFGsA2yj-wYRJYBnZPhwuub-UiVKO6KnZ1kZQGm4kLzXd1k7XFU7EYSImAYYrP26eiqqvyDIP" data-setup="{}"></video>,视频内放了什么</p>`,
+        // "examQuestionTitle": 'ai考试试题，啊哈哈哈哈接啊哈啊哈',
+
+        // 大图片
+        examQuestionTitle: `<p>天使一级互动点击4题的题目</p><p><img height="240px" src="http://tmallapi.bluemoon.com.cn/cloudStorage/read/read?p=Qw8Psqeb8argnikbmGN1vCcP1k0fCMUS-GpnIJIXbabh0u00brPTm9KTsxVKY5Mm5Zgeb9Gq5NLRvEuNifcTzs-6bu_dCut3oT7e1Sg3X7eN3VQzQzewEtorHYnojwE8QcCRsaoMxLeGuUa2kciguJJ9UJoWkhYfbzGcsSZSOtajntDNHonvGddfjRCgLazr"/></p><p><video style="height: 240px;" class="video-js vjs-default-skin video-js" controls="" preload="none" width="420" height="280" src="http://tmallapi.bluemoon.com.cn/cloudStorage/read/read?p=TB7JHH_sAPg4htRR5beS8VneH5u4-b7ctz62iyfAkTSeVWc0S3MxI0dssFCEVIgd6Benb1CQFrwHrneISRjzfhQbu1IJj0qip0yZfrIdsLyYm8uWBHhO50-nyVyNiuc5a6EtPMnFWDeietWJ41K3Nf8XP_ZGCsgLbHiynLPn2ss71qXRKAf5PFMBPfDtI8-4" data-setup="{}"></video></p>`,
+
+        // "examQuestionTitle": `<p>天使一级互动点击3题的题目，天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点，天使一级互动3</p><p><img height="240px" src="http://tmallapi.bluemoon.com.cn/cloudStorage/read/read?p=_3aqB6L2LMs-YKqV7c__hkoje_vvbkFznX946teZzbbh0u00brPTm9KTsxVKY5MmrUnT_QjHo2PLyUZ7Q9Q7mjXgcfO6sVuDTAeFhO9-ZiGN3VQzQzewEtorHYnojwE8A6Xb24EnEN0z4TcRbROygxdzwawaZpwZyqS3wvHqXeGjntDNHonvGddfjRCgLazr" alt="wKjwDlwzBgqEflpwAAAAAA1PV4E170.jpg"/></p>`,
+        "optionList": [{
+                "optionId": 105,
+                // "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658"
+                "optionDesc": '阿什顿飞卡是你发的啊速度发快速打法阿什顿飞卡是你发的啊速度发快速打法阿什顿飞卡是你发的啊速度发快速打法阿什顿飞卡是你发的啊速度发快速打法',
+
+            },
+            {
+                "optionId": 554,
+                "optionDesc": "1"
+            },
+            {
+                "optionId": 947,
+                "optionDesc": "送达方式地方阿什顿飞暗示法"
+            },
+            {
+                "optionId": 355,
+                "optionDesc": "a"
+            }
+        ],
+        "examQuestionCode": "",
+        "interactType": 1,
+        "examQuestionNum": 100,
+        "examQuestionTypeName": "多选题",
+        "examQuestionId": 2
+    }
+    // controls="" preload="none" width="420" height="280" 
+
+     var queClick = {
+        "examQuestionType": 5, //1 单选； 5 点击
+        "examQuestionTitle": `<p>点击题目啊
+        <video style="height: 240px;" class="video-js vjs-default-skin video-js"
+        width="420" height="280" 
+
+        controls="" 
+        
+        preload="preload"
+        object-fit="contain"
+        x5-video-player-fullscreen="true"
+        webkit-playsinline="true" 
+        x-webkit-airplay="true" 
+        playsinline="true" 
+        x5-video-player-type="h5"
+
+        src="http://tmallapi.bluemoon.com.cn/cloudStorage/read/read?p=wSa4qbfHxJO39NCVyv5oOghYdxfw6Vg403p2DkH4xEUlmfzDMi13K1I_NvklMLxhRpCSfjNkjvbs30ddex5nXQzWw3F0spMrCdD4twdP3N6p3uEdZS7CjVxrFGsA2yj-wYRJYBnZPhwuub-UiVKO6KnZ1kZQGm4kLzXd1k7XFU7EYSImAYYrP26eiqqvyDIP" 
+        data-setup="{}">
+        </video>
+        ,视频内放了什么</p>`,
+        // "examQuestionTitle": 'ai考试试题，啊哈哈哈哈接啊哈啊哈' + queCount,
+        // "examQuestionTitle": `<p>天使一级互动点击3题的题目，天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点天使一级互动点击3题的考点，天使一级互动3</p>
+        // <p><img height="240px" src="http://tmallapi.bluemoon.com.cn/cloudStorage/read/read?p=_3aqB6L2LMs-YKqV7c__hkoje_vvbkFznX946teZzbbh0u00brPTm9KTsxVKY5MmrUnT_QjHo2PLyUZ7Q9Q7mjXgcfO6sVuDTAeFhO9-ZiGN3VQzQzewEtorHYnojwE8A6Xb24EnEN0z4TcRbROygxdzwawaZpwZyqS3wvHqXeGjntDNHonvGddfjRCgLazr" alt="wKjwDlwzBgqEflpwAAAAAA1PV4E170.jpg"/></p>`,
+        "optionList": [{
+                "optionId": 105,
+                // "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658"
+                "optionDesc": '阿什顿飞卡是你发的啊速度发快速打法阿什顿飞卡是你发的啊速度发快速打法阿什顿飞卡是你发的啊速度发快速打法阿什顿飞卡是你发的啊速度发快速打法',
+
+            },
+            {
+                "optionId": 554,
+                "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556261563&di=017ccd97add3126c5d99f955f56fcad2&imgtype=jpg&er=1&src=http%3A%2F%2Fimgs.xymvip.com%2Fgroup1%2FM00%2F01%2FCA%2F05XfllQQjbGAFMiVAADGVkI-pdc335.jpg"
+            },
+            {
+                "optionId": 947,
+                "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555667367560&di=9b4639f48bf4d15bda22f141ff6dfde0&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Fnews%2Fpics%2Fhv1%2F95%2F49%2F2159%2F140401565.png"
+            },
+            {
+                "optionId": 355,
+                "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666747275&di=36a802ecfaa339bcfa657de4b9504915&imgtype=0&src=http%3A%2F%2Fi.gtimg.cn%2Fqqlive%2Fimg%2Fjpgcache%2Ffiles%2Fqqvideo%2Fhori%2Fv%2Fvj4pvtejerml1my.jpg"
+            }
+        ],
+        "examQuestionCode": "",
+        "interactType": 1,
+        "examQuestionNum": 100,
+        "examQuestionTypeName": "多选题",
+        "examQuestionId": 2
+    }
+    var queRank = {
+                "examQuestionType": 5,
+                "examQuestionTitle": "育究技会育人规已手引题目",
+                "optionList": [{
+                        "optionId": 105,
+                        "optionDesc": "A:五山"
+                    },
+                    {
+                        "optionId": 554,
+                        "optionDesc": "B.珠江新城"
+                    },
+                    {
+                        "optionId": 947,
+                        "optionDesc": "C.猎德"
+                    },
+                    {
+                        "optionId": 947,
+                        "optionDesc": "C.猎德11111"
+                    },
+                    {
+                        "optionId": 947,
+                        "optionDesc": "C.猎德22222"
+                    },
+                    {
+                        "optionId": 947,
+                        "optionDesc": "C.s"
+                    },
+                    {
+                        "optionId": 355,
+                        "optionDesc": "D.上社"
+                    }
+                ],
+                "examQuestionCode": "",
+                "interactType": 2,
+                "examQuestionNum": 100,
+                "examQuestionTypeName": "多选题",
+                "examQuestionId": 2
+            }
+    var queList = [
+            // queClick,que,queRank
+            que
+        ]
+    if(queCount >= 2) {
+        console.log('最后11一1题了')
+        queList = []
+    }
     var data = {
         "isSuccess": true,
         "responseCode": 0,
         "responseMsg": "请求成功",
-        "data": [{
-                "examQuestionType": 5,
-                "examQuestionTitle": "育究技会育人规已手引题目",
-                "optionList": [{
-                        "optionId": 105,
-                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658"
-                    },
-                    {
-                        "optionId": 554,
-                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556261563&di=017ccd97add3126c5d99f955f56fcad2&imgtype=jpg&er=1&src=http%3A%2F%2Fimgs.xymvip.com%2Fgroup1%2FM00%2F01%2FCA%2F05XfllQQjbGAFMiVAADGVkI-pdc335.jpg"
-                    },
-                    {
-                        "optionId": 947,
-                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555667367560&di=9b4639f48bf4d15bda22f141ff6dfde0&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Fnews%2Fpics%2Fhv1%2F95%2F49%2F2159%2F140401565.png"
-                    },
-                    {
-                        "optionId": 355,
-                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666747275&di=36a802ecfaa339bcfa657de4b9504915&imgtype=0&src=http%3A%2F%2Fi.gtimg.cn%2Fqqlive%2Fimg%2Fjpgcache%2Ffiles%2Fqqvideo%2Fhori%2Fv%2Fvj4pvtejerml1my.jpg"
-                    }
-                ],
-                "examQuestionCode": "",
-                "interactType": 1,
-                "examQuestionNum": 100,
-                "examQuestionTypeName": "多选题",
-                "examQuestionId": 2
-            },
-            {
-                "examQuestionType": 5,
-                "examQuestionTitle": "育究技会育人规已手引题目",
-                "optionList": [{
-                        "optionId": 105,
-                        "optionDesc": "A:五山"
-                    },
-                    {
-                        "optionId": 554,
-                        "optionDesc": "B.珠江新城"
-                    },
-                    {
-                        "optionId": 947,
-                        "optionDesc": "C.猎德"
-                    },
-                    {
-                        "optionId": 355,
-                        "optionDesc": "D.上社"
-                    }
-                ],
-                "examQuestionCode": "",
-                "interactType": 2,
-                "examQuestionNum": 100,
-                "examQuestionTypeName": "多选题",
-                "examQuestionId": 2
-            },
-            {
-                "examQuestionId": 79,
-                "examQuestionCode": "",
-                "examQuestionType": 1,
-                "examQuestionTypeName": "多选题",
-                "interactType": 2,
-                "examQuestionTitle": "带题山色大基群物和件",
-                "optionList": [{
-                        "optionId": 105,
-                        "optionDesc": "A:五山"
-                    },
-                    {
-                        "optionId": 554,
-                        "optionDesc": "B.珠江新城"
-                    },
-                    {
-                        "optionId": 947,
-                        "optionDesc": "C.猎德"
-                    },
-                    {
-                        "optionId": 355,
-                        "optionDesc": "D.上社"
-                    }
-                ],
-                "examQuestionNum": 71
-            }
-        ],
+        "data": queList,
         "total": 1
     }
     res.send(data);
@@ -190,11 +250,11 @@ router.post('/submitAnswers', jsonParser, function(req, res) {
             "totalAnswerNum": 5,
             "answerResultList": [{
                     "examQuestionNum": 1,
-                    "answerCorrect": 1
+                    "answerCorrect": 0
                 },
                 {
                     "examQuestionNum": 1,
-                    "answerCorrect": 1
+                    "answerCorrect": 0
                 },
                 {
                     "examQuestionNum": 1,
@@ -378,11 +438,6 @@ router.post('/getAnswers', jsonParser, function(req, res) {
                         "optionId": 912,
                         "optionDesc": "调指热组革",
                         "answerCorrect": 0
-                    },
-                    {
-                        "optionId": 125,
-                        "optionDesc": "期达严科对引",
-                        "answerCorrect": 1
                     }
                 ],
                 "examQuestionCode": "Q8553",
@@ -406,7 +461,7 @@ router.post('/getAnswers', jsonParser, function(req, res) {
                     },
                     {
                         "optionId": 1042,
-                        "optionDesc": "没成问好",
+                        "optionDesc": "没成问好111111",
                         "answerCorrect": 0
                     },
                     {
@@ -456,6 +511,61 @@ router.post('/getAnswers', jsonParser, function(req, res) {
                 "interactType": 2,
                 "examQuestionTypeName": "单选题"
             },
+            {
+                "examQuestionId": 79,
+                "examQuestionCode": "",
+                "examQuestionType": 5,
+                "examQuestionTypeName": "多选题",
+                "interactType": 2,
+                "examQuestionTitle": "师傅师傅师傅",
+                "optionList": [{
+                        "optionId": 105,
+                        "optionDesc": "A:五山"
+                    },
+                    {
+                        "optionId": 554,
+                        "optionDesc": "B.珠江新城"
+                    },
+                    {
+                        "optionId": 947,
+                        "optionDesc": "C.猎德"
+                    },
+                    {
+                        "optionId": 355,
+                        "optionDesc": "D.上社"
+                    }
+                ],
+                "examQuestionNum": 71
+            },
+            {   // kone todo 
+                "examQuestionId": 79,
+                "examQuestionCode": "",
+                "examQuestionType": 5,
+                "examQuestionTypeName": "单选题",
+                "interactType": 1,
+                "examQuestionTitle": "带题山色大基群物和件",
+                "optionList": [{
+                        "optionId": 1692,
+                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658",
+                        "answerCorrect": 1
+                    },
+                    {
+                        "optionId": 1399,
+                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658",
+                        "answerCorrect": 0
+                    },
+                    {
+                        "optionId": 1042,
+                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658",
+                        "answerCorrect": 0
+                    },
+                    {
+                        "optionId": 912,
+                        "optionDesc": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555666859553&di=61f634d013f3545a46384ce88b8e9807&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F26e3f21b16af3ed9b3f9bddfe74215bc2f9467db5690-OXjrNu_fw658",
+                        "answerCorrect": 0
+                    }
+                ]
+            }
         ],
         "total": 43
     }
