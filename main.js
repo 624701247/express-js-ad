@@ -92,7 +92,7 @@ app.use('/h5', express.static('jinx'));
 
 
 /*启动服务器*/ 
-var server = app.listen(8081, function () {
+var server = app.listen(8588, function () {
     var host = server.address().address
     var port = server.address().port
     console.log("应用实例，访问地址为 http://%s:%s", '127.0.0.1', port) 
